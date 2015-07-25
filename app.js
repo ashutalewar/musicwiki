@@ -4,13 +4,22 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var debug = require('debug')('sampleapp:server');
+var http = require('http');
+var models = require("./models");
+
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var debug = require('debug')('scraper:server');
-var http = require('http');
+var alfreds = require('./routes/alfreds');
+var starterkits = require('./routes/starterkits');
+var robins = require('./routes/robins');
+var dongles = require('./routes/dongles');
 
 var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 /**
  * Get port from environment and store in Express.
@@ -19,12 +28,6 @@ var app = express();
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -35,7 +38,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/alfreds', alfreds);
+app.use('/robins', robins);
+app.use('/dongles', dongles);
+app.use('/starterkits', starterkits);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,16 +77,11 @@ app.use(function(err, req, res, next) {
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+models.sequelize.sync().then(function () {
+  var server = app.listen(app.get('port'), function() {
+    debug('Express server listening on port ' + server.address().port);
+  });
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -141,3 +142,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+module.exports = app;
