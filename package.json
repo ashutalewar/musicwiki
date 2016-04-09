@@ -12,8 +12,10 @@
     "express": "~4.12.4",
     "jade": "~1.9.2",
     "morgan": "~1.5.3",
+    "nodemw": "^0.7.0",
     "pg": "^4.4.0",
     "pg-hstore": "^2.3.2",
+    "request": "^2.60.0",
     "sequelize": "^3.3.2",
     "serve-favicon": "~2.2.1"
   }

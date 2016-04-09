@@ -4,7 +4,16 @@
     "password": "ubuntu123",
     "database": "student",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "wiki":{
+                "server": "www.mediawiki.org",  
+                "path": "/w/api.php",                  
+                "debug": false,                
+                "username": "foo",             
+                "password": "bar",             
+                "userAgent": "Custom UA",      
+                "concurrency": 5               
+          }
   },
   "test": {
     "username": "student",
